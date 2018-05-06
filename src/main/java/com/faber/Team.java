@@ -8,6 +8,7 @@ public class Team {
 
     private String name;
     private int ranking;
+    private int played;
     private int point;
     private int goal;
     private int won;
@@ -21,9 +22,10 @@ public class Team {
     public Team() {
     }
 
-    public Team(String name, int ranking, int point, int goal, int won, int lost, int drawn, int yellowCardScore, int redCardScore, Player player1, Player player2) {
+    public Team(String name, int ranking, int played, int point, int goal, int won, int lost, int drawn, int yellowCardScore, int redCardScore, Player player1, Player player2) {
         this.name = name;
         this.ranking = ranking;
+        this.played = played;
         this.point = point;
         this.goal = goal;
         this.won = won;
@@ -35,10 +37,10 @@ public class Team {
         this.player2 = player2;
     }
 
-
     public Team(String name, int ranking) {
         this.name = name;
         this.ranking = ranking;
+        this.played = 0;
         this.point = 0;
         this.goal = 0;
         this.won = 0;
@@ -62,6 +64,14 @@ public class Team {
 
     public void setRanking(int ranking) {
         this.ranking = ranking;
+    }
+
+    public int getPlayed() {
+        return played;
+    }
+
+    public void setPlayed(int played) {
+        this.played = played;
     }
 
     public int getPoint() {

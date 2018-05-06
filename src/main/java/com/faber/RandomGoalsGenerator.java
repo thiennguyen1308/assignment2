@@ -8,12 +8,6 @@ import java.util.Random;
  */
 public class RandomGoalsGenerator {
 
-//    public int generateGoal(boolean isHigherRankedTeam, int diffTeam) {
-//        if (isHigherRankedTeam) {
-//            return randomNumber(0, 7);
-//        }
-//        return randomNumber(0, 7) - diffTeam;
-//    }
     public int randomGoalInRange(int min, int max) {
         Random rand = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
@@ -32,7 +26,7 @@ public class RandomGoalsGenerator {
         return randomNum1 == randomNum2 ? 1 : 0;
     }
 
-   public int randomGoal() {
+    public int randomGoal() {
         Random rand = new Random();
         return rand.nextInt(2);
     }
