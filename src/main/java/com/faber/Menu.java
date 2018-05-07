@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -122,7 +123,7 @@ public class Menu {
 
         try {
             //br = new BufferedReader(new FileReader(FILENAME));
-            fr = new FileReader("C:/Users/THIEN/Downloads/teams.txt");
+            fr = new FileReader("C:\\Users\\PC\\Downloads\\teams.txt");
             br = new BufferedReader(fr);
 
             String sCurrentLine;
@@ -184,8 +185,26 @@ public class Menu {
     }
 
     public static void sortTeam(List<Team> listTeam) {
-        for (Team team : listTeam) {
-            System.out.println(team.getName() + "    " + team.getPlayed() + "    " + team.getWon() + "    " + team.getLost() + "    " + team.getDrawn() + "    " + team.getGoal() + "    " + team.getPoint() + "    " + (team.getYellowCardScore() + 2 * team.getRedCardScore()));
+        for (int i = 0; i < listTeam.size(); i++) {
+            Team team = listTeam.get(i);
+            for (int j = i + 1; j < listTeam.size(); j++) {
+                if (listTeam.get(j).getPoint() > team.getPoint()) {
+                    listTeam.add(i, listTeam.get(j));
+                    listTeam.add(j, team);
+                } else if (listTeam.get(j).getPoint() == team.getPoint()) {
+                    if (listTeam.get(j).getGoal() > team.getGoal()) {
+                        listTeam.add(i, listTeam.get(j));
+                        listTeam.add(j, team);
+                    } else if (listTeam.get(j).getGoal() == team.getGoal()) {
+                        Random rand = new Random();
+                        if (rand.nextBoolean()) {
+                            listTeam.add(i, listTeam.get(j));
+                            listTeam.add(j, team);
+                        }
+                    }
+                }
+            }
+
         }
     }
 

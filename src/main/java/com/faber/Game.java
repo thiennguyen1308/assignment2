@@ -35,13 +35,15 @@ public class Game {
 
         Player player1Team1 = team1.getPlayer1();
         Player player2Team1 = team1.getPlayer2();
-        player1Team1.setGoals(player1Team1.getGoals() + randomGoalsGenerator.randomGoalInRange(0, team1Goal + 1));
-        player2Team1.setGoals(player2Team1.getGoals() + team1Goal - player1Team1.getGoals());
+        int player1Goals = randomGoalsGenerator.randomGoalInRange(0, team1Goal + 1);
+        player1Team1.setGoals(player1Team1.getGoals() + player1Goals);
+        player2Team1.setGoals(player2Team1.getGoals() + team1Goal - player1Goals);
 
         Player player1Team2 = team2.getPlayer1();
         Player player2Team2 = team2.getPlayer2();
-        player1Team2.setGoals(player1Team2.getGoals() + randomGoalsGenerator.randomGoalInRange(0, team2Goal + 1));
-        player2Team2.setGoals(player2Team2.getGoals() + team2Goal - player1Team2.getGoals());
+        int player2Goals = randomGoalsGenerator.randomGoalInRange(0, team2Goal + 1);
+        player1Team2.setGoals(player1Team2.getGoals() + player2Goals);
+        player2Team2.setGoals(player2Team2.getGoals() + team2Goal - player2Goals);
 
         if (team1Goal > team2Goal) {
             team1.setPoint(3);
