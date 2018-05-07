@@ -46,31 +46,27 @@ public class Game {
         player2Team2.setGoals(player2Team2.getGoals() + team2Goal - player2Goals);
 
         if (team1Goal > team2Goal) {
-            team1.setPoint(3);
+            team1.setPoint(team1.getPoint() + 3);
             team1.setWon(team1.getWon() + 1);
-            team2.setPoint(0);
             team2.setLost(team2.getLost() + 1);
         } else if (team1Goal < team2Goal) {
-            team1.setPoint(0);
             team1.setLost(team1.getLost() + 1);
-            team2.setPoint(3);
+            team2.setPoint(team2.getPoint() + 3);
             team2.setWon(team2.getWon() + 1);
         } else {
             if (isFinal) {
                 if (isTeam1Win) {
-                    team1.setPoint(3);
+                    team1.setPoint(team1.getPoint() + 3);
                     team1.setWon(team1.getWon() + 1);
-                    team2.setPoint(0);
                     team2.setLost(team2.getLost() + 1);
                 } else {
-                    team1.setPoint(0);
                     team1.setLost(team1.getLost() + 1);
                     team2.setPoint(3);
                     team2.setWon(team2.getWon() + 1);
                 }
             } else {
-                team1.setPoint(1);
-                team2.setPoint(1);
+                team1.setPoint(team1.getPoint() + 1);
+                team2.setPoint(team2.getPoint() + 1);
                 team1.setDrawn(team1.getDrawn() + 1);
                 team2.setDrawn(team2.getDrawn() + 1);
             }

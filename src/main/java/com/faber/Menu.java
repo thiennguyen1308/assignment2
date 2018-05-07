@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -88,6 +89,7 @@ public class Menu {
                             game.playGame(team1, team2, false);
                         }
                     }
+                    sortTeam(listTeam);
                     isFinishPreliminaryStage = true;
                     break;
                 }
@@ -185,22 +187,22 @@ public class Menu {
     }
 
     public static void sortTeam(List<Team> listTeam) {
+        viewTeam(listTeam);
+
         for (int i = 0; i < listTeam.size(); i++) {
-            Team team = listTeam.get(i);
+//            System.out.println(listTeam.get(i).getName());
             for (int j = i + 1; j < listTeam.size(); j++) {
+                Team team = listTeam.get(j - 1);
                 if (listTeam.get(j).getPoint() > team.getPoint()) {
-                    listTeam.add(i, listTeam.get(j));
-                    listTeam.add(j, team);
+                    Collections.swap(listTeam, j, j - 1);
                 } else if (listTeam.get(j).getPoint() == team.getPoint()) {
                     if (listTeam.get(j).getGoal() > team.getGoal()) {
-                        listTeam.add(i, listTeam.get(j));
-                        listTeam.add(j, team);
+                        Collections.swap(listTeam, j, j - 1);
                     } else if (listTeam.get(j).getGoal() == team.getGoal()) {
-                        Random rand = new Random();
-                        if (rand.nextBoolean()) {
-                            listTeam.add(i, listTeam.get(j));
-                            listTeam.add(j, team);
-                        }
+//                        Random rand = new Random();
+//                        if (rand.nextBoolean()) {
+//                            Collections.swap(listTeam, j, j - 1);
+//                        }
                     }
                 }
             }
