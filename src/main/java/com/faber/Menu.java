@@ -84,7 +84,10 @@ public class Menu {
                     Game game = new Game();
                     for (int i = 0; i < listTeam.size(); i++) {
                         Team team1 = listTeam.get(i);
-                        for (int j = i + 1; j < listTeam.size(); j++) {
+                        for (int j = 0; j < listTeam.size(); j++) {
+                            if (j == i) {
+                                continue;
+                            }
                             Team team2 = listTeam.get(j);
                             game.playGame(team1, team2, false);
                         }
@@ -188,21 +191,18 @@ public class Menu {
 
     public static void sortTeam(List<Team> listTeam) {
         viewTeam(listTeam);
-
         for (int i = 0; i < listTeam.size(); i++) {
-//            System.out.println(listTeam.get(i).getName());
-            for (int j = i + 1; j < listTeam.size(); j++) {
-                Team team = listTeam.get(j - 1);
-                if (listTeam.get(j).getPoint() > team.getPoint()) {
+            for (int j = 1; j < listTeam.size(); j++) {
+                if (listTeam.get(j).getPoint() > listTeam.get(j - 1).getPoint()) {
                     Collections.swap(listTeam, j, j - 1);
-                } else if (listTeam.get(j).getPoint() == team.getPoint()) {
-                    if (listTeam.get(j).getGoal() > team.getGoal()) {
+                } else if (listTeam.get(j).getPoint() == listTeam.get(j - 1).getPoint()) {
+                    if (listTeam.get(j).getGoal() > listTeam.get(j - 1).getGoal()) {
                         Collections.swap(listTeam, j, j - 1);
-                    } else if (listTeam.get(j).getGoal() == team.getGoal()) {
-//                        Random rand = new Random();
-//                        if (rand.nextBoolean()) {
-//                            Collections.swap(listTeam, j, j - 1);
-//                        }
+                    } else if (listTeam.get(j).getGoal() == listTeam.get(j - 1).getGoal()) {
+                        Random rand = new Random();
+                        if (rand.nextBoolean()) {
+                            Collections.swap(listTeam, j, j - 1);
+                        }
                     }
                 }
             }
