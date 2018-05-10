@@ -190,7 +190,6 @@ public class Menu {
     }
 
     public static void sortTeam(List<Team> listTeam) {
-        viewTeam(listTeam);
         for (int i = 0; i < listTeam.size(); i++) {
             for (int j = 1; j < listTeam.size(); j++) {
                 if (listTeam.get(j).getPoint() > listTeam.get(j - 1).getPoint()) {
