@@ -21,9 +21,18 @@ public class Game {
         }
         int team1YellowCard = randomGoalsGenerator.randomYellowCard();
         int team1RedCard = randomGoalsGenerator.randomRedCard();
+//        if () {
+//
+//        }
+        team1.setYellowCardScore(team1.getYellowCardScore() + team1YellowCard);
+        team1.setRedCardScore(team1.getRedCardScore() + team1RedCard);
+
         int team2YellowCard = randomGoalsGenerator.randomYellowCard();
         int team2RedCard = randomGoalsGenerator.randomRedCard();
-
+        
+        team2.setYellowCardScore(team2.getYellowCardScore() + team2YellowCard);
+        team2.setRedCardScore(team2.getRedCardScore() + team2RedCard);
+        
         if (isFinal && (team1Goal == team2Goal)) {
             isTeam1Win = playPenaltyShootOut(team1, team2);
         }
@@ -35,13 +44,13 @@ public class Game {
 
         Player player1Team1 = team1.getPlayer1();
         Player player2Team1 = team1.getPlayer2();
-        int player1Goals = randomGoalsGenerator.randomGoalInRange(0, team1Goal + 1);
+        int player1Goals = randomGoalsGenerator.randomGoalInRange(0, team1Goal);
         player1Team1.setGoals(player1Team1.getGoals() + player1Goals);
         player2Team1.setGoals(player2Team1.getGoals() + team1Goal - player1Goals);
 
         Player player1Team2 = team2.getPlayer1();
         Player player2Team2 = team2.getPlayer2();
-        int player2Goals = randomGoalsGenerator.randomGoalInRange(0, team2Goal + 1);
+        int player2Goals = randomGoalsGenerator.randomGoalInRange(0, team2Goal);
         player1Team2.setGoals(player1Team2.getGoals() + player2Goals);
         player2Team2.setGoals(player2Team2.getGoals() + team2Goal - player2Goals);
 

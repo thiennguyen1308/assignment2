@@ -128,7 +128,7 @@ public class Menu {
 
         try {
             //br = new BufferedReader(new FileReader(FILENAME));
-            fr = new FileReader("C:\\Users\\PC\\Downloads\\teams.txt");
+            fr = new FileReader("C:\\Users\\THIEN\\Downloads\\teams.txt");
             br = new BufferedReader(fr);
 
             String sCurrentLine;
