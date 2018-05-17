@@ -9,13 +9,16 @@ import java.util.List;
 public class Game {
 
     private List<Team> listTeam;
-    private String winnerTeam;
-
-    public Game(List<Team> listTeam) {
-        this.listTeam = listTeam;
-    }
+    private String championTeam = "";
+    private String goldenBootAward = "";
+    private String fairTeam = "";
 
     public Game() {
+
+    }
+
+    public Game(List<Team> listTeamÏ) {
+        this.listTeam = listTeam;
     }
 
     public List<Team> getListTeam() {
@@ -26,12 +29,28 @@ public class Game {
         this.listTeam = listTeam;
     }
 
-    public String getWinnerTeam() {
-        return winnerTeam;
+    public String getChampionTeam() {
+        return championTeam;
     }
 
-    public void setWinnerTeam(String winnerTeam) {
-        this.winnerTeam = winnerTeam;
+    public void setChampionTeam(String winnerTeam) {
+        this.championTeam = winnerTeam;
+    }
+
+    public String getGoldenBootAward() {
+        return goldenBootAward;
+    }
+
+    public void setGoldenBootAward(String GoldenBootAward) {
+        this.goldenBootAward = GoldenBootAward;
+    }
+
+    public String getFairTeam() {
+        return fairTeam;
+    }
+
+    public void setFairTeam(String fairTeam) {
+        this.fairTeam = fairTeam;
     }
 
     public void playGame(Team team1, Team team2, Boolean isFinal) {
@@ -80,22 +99,24 @@ public class Game {
         player2Team2.setGoals(player2Team2.getGoals() + team2Goal - player2Goals);
 
         if (team1Goal > team2Goal) {
+            championTeam = team1.getName();
             team1.setPoint(team1.getPoint() + 3);
             team1.setWon(team1.getWon() + 1);
             team2.setLost(team2.getLost() + 1);
         } else if (team1Goal < team2Goal) {
+            championTeam = team2.getName();
             team1.setLost(team1.getLost() + 1);
             team2.setPoint(team2.getPoint() + 3);
             team2.setWon(team2.getWon() + 1);
         } else {
             if (isFinal) {
                 if (isTeam1Win) {
-                    winnerTeam = team1.getName();
+                    championTeam = team1.getName();
                     team1.setPoint(team1.getPoint() + 3);
                     team1.setWon(team1.getWon() + 1);
                     team2.setLost(team2.getLost() + 1);
                 } else {
-                    winnerTeam = team2.getName();
+                    championTeam = team2.getName();
                     team1.setLost(team1.getLost() + 1);
                     team2.setPoint(3);
                     team2.setWon(team2.getWon() + 1);
@@ -139,5 +160,34 @@ public class Game {
         if (team2YellowCard != 0 || team2RedCard != 0) {
             System.out.println(team2.getName() + " - " + (team2YellowCard == 1 ? "1 yellow card" : "") + (team2RedCard == 1 ? " - 1 red card" : ""));
         }
+    }
+
+    public void viewStatistic() {
+        int mostGoal = 0;
+        int mostCardScore = 100;
+        for (int i = 0; i < listTeam.size(); i++) {
+            if (listTeam.get(i).getPlayer1().getGoals() > mostGoal) {
+                mostGoal = listTeam.get(i).getPlayer1().getGoals();
+                goldenBootAward = listTeam.get(i).getPlayer1().getName() + " from " + listTeam.get(i).getName();
+            } else if (listTeam.get(i).getPlayer1().getGoals() == mostGoal) {
+                mostGoal = listTeam.get(i).getPlayer1().getGoals();
+                goldenBootAward = ", " + listTeam.get(i).getPlayer1().getName() + " from " + listTeam.get(i).getName();
+            }
+            if (listTeam.get(i).getPlayer2().getGoals() > mostGoal) {
+                mostGoal = listTeam.get(i).getPlayer2().getGoals();
+                goldenBootAward = listTeam.get(i).getPlayer2().getName() + " from " + listTeam.get(i).getName();
+            } else if (listTeam.get(i).getPlayer2().getGoals() == mostGoal) {
+                mostGoal = listTeam.get(i).getPlayer2().getGoals();
+                goldenBootAward = ", " + listTeam.get(i).getPlayer2().getName() + " from " + listTeam.get(i).getName();
+            }
+            int cardScore = listTeam.get(i).getYellowCardScore() + (2 * listTeam.get(i).getRedCardScore());
+            if (cardScore < mostCardScore) {
+                mostCardScore = cardScore;
+                fairTeam = listTeam.get(i).getName();
+            } else if (cardScore == mostCardScore) {
+                fairTeam += " and " + listTeam.get(i).getName();
+            }
+        }
+
     }
 }

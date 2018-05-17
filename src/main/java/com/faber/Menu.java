@@ -98,10 +98,12 @@ public class Menu {
                 case "B": {
                     if (isFinishPreliminaryStage) {
                         game.playGame(listTeam.get(0), listTeam.get(1), true);
+                        game.viewStatistic();
                     } else {
                         System.out.println("Please play Preliminary stage before final");
                         break;
                     }
+                    sortTeam();
                 }
                 case "C":
                     viewTeam();
@@ -110,7 +112,8 @@ public class Menu {
                     viewPlayer();
                     break;
                 case "E":
-
+                    viewStatistic();
+                    break;
                 case "X": {
                     break menuLoop;
                 }
@@ -128,7 +131,7 @@ public class Menu {
 
         try {
             //br = new BufferedReader(new FileReader(FILENAME));
-            fr = new FileReader("C:\\Users\\PC\\Downloads\\teams.txt");
+            fr = new FileReader("/Users/nguyenthong/Downloads/teams.txt");
             br = new BufferedReader(fr);
 
             String sCurrentLine;
@@ -224,16 +227,8 @@ public class Menu {
     }
 
     public void viewStatistic() {
-        System.out.println("Football World Cup Winner: " + game.getWinnerTeam());
-//        List<Team> listTeam = game.getListTeam();
-//        String goldernBootWinner = listTeam.get(0).getPlayer1().getName();
-//        int mostGoal = listTeam.get(0).getPlayer1().getGoals();
-//        String goldernBootTeam = listTeam.get(0).getName();
-//
-//        for (Team team : listTeam) {
-//            if () {
-//            
-//            }
-//        }
+        System.out.println("Football World Cup Winner: " + game.getChampionTeam());
+        System.out.println("golden boot award: " + game.getGoldenBootAward());
+        System.out.println("fair team: " + game.getFairTeam());
     }
 }
