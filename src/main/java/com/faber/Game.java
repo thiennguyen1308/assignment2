@@ -1,10 +1,38 @@
 package com.faber;
 
+import java.util.List;
+
 /**
  *
  * @author THIEN
  */
 public class Game {
+
+    private List<Team> listTeam;
+    private String winnerTeam;
+
+    public Game(List<Team> listTeam) {
+        this.listTeam = listTeam;
+    }
+
+    public Game() {
+    }
+
+    public List<Team> getListTeam() {
+        return listTeam;
+    }
+
+    public void setListTeam(List<Team> listTeam) {
+        this.listTeam = listTeam;
+    }
+
+    public String getWinnerTeam() {
+        return winnerTeam;
+    }
+
+    public void setWinnerTeam(String winnerTeam) {
+        this.winnerTeam = winnerTeam;
+    }
 
     public void playGame(Team team1, Team team2, Boolean isFinal) {
         RandomGoalsGenerator randomGoalsGenerator = new RandomGoalsGenerator();
@@ -21,18 +49,15 @@ public class Game {
         }
         int team1YellowCard = randomGoalsGenerator.randomYellowCard();
         int team1RedCard = randomGoalsGenerator.randomRedCard();
-//        if () {
-//
-//        }
         team1.setYellowCardScore(team1.getYellowCardScore() + team1YellowCard);
         team1.setRedCardScore(team1.getRedCardScore() + team1RedCard);
 
         int team2YellowCard = randomGoalsGenerator.randomYellowCard();
         int team2RedCard = randomGoalsGenerator.randomRedCard();
-        
+
         team2.setYellowCardScore(team2.getYellowCardScore() + team2YellowCard);
         team2.setRedCardScore(team2.getRedCardScore() + team2RedCard);
-        
+
         if (isFinal && (team1Goal == team2Goal)) {
             isTeam1Win = playPenaltyShootOut(team1, team2);
         }
@@ -65,10 +90,12 @@ public class Game {
         } else {
             if (isFinal) {
                 if (isTeam1Win) {
+                    winnerTeam = team1.getName();
                     team1.setPoint(team1.getPoint() + 3);
                     team1.setWon(team1.getWon() + 1);
                     team2.setLost(team2.getLost() + 1);
                 } else {
+                    winnerTeam = team2.getName();
                     team1.setLost(team1.getLost() + 1);
                     team2.setPoint(3);
                     team2.setWon(team2.getWon() + 1);

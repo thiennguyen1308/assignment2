@@ -17,13 +17,13 @@ public class Menu {
 
     public Menu() {
     }
+    public static Game game = new Game();
 
-    private static List<Team> listTeam = new ArrayList<>();
-
-    public static void main(String[] args) {
+    public void start() {
         Menu menu = new Menu();
         menu.readFile();
         Scanner sc = new Scanner(System.in);
+        List<Team> listTeam = game.getListTeam();
         for (int i = 0; i < listTeam.size(); i++) {
             Boolean player1SecondTry = false;
             Player player1 = new Player();
@@ -81,7 +81,6 @@ public class Menu {
             String option = sc.nextLine();
             switch (option) {
                 case "A": {
-                    Game game = new Game();
                     for (int i = 0; i < listTeam.size(); i++) {
                         Team team1 = listTeam.get(i);
                         for (int j = 0; j < listTeam.size(); j++) {
@@ -92,25 +91,26 @@ public class Menu {
                             game.playGame(team1, team2, false);
                         }
                     }
-                    sortTeam(listTeam);
+                    sortTeam();
                     isFinishPreliminaryStage = true;
                     break;
                 }
                 case "B": {
                     if (isFinishPreliminaryStage) {
-
+                        game.playGame(listTeam.get(0), listTeam.get(1), true);
                     } else {
                         System.out.println("Please play Preliminary stage before final");
                         break;
                     }
                 }
                 case "C":
-                    viewTeam(listTeam);
+                    viewTeam();
                     break;
                 case "D":
-                    viewPlayer(listTeam);
+                    viewPlayer();
                     break;
                 case "E":
+
                 case "X": {
                     break menuLoop;
                 }
@@ -128,18 +128,18 @@ public class Menu {
 
         try {
             //br = new BufferedReader(new FileReader(FILENAME));
-            fr = new FileReader("C:\\Users\\THIEN\\Downloads\\teams.txt");
+            fr = new FileReader("C:\\Users\\PC\\Downloads\\teams.txt");
             br = new BufferedReader(fr);
 
             String sCurrentLine;
-
+            List<Team> listTeam = new ArrayList<>();
             while ((sCurrentLine = br.readLine()) != null) {
                 System.out.println(sCurrentLine);
                 String name = sCurrentLine.split(",")[0];
                 int ranking = Integer.parseInt(sCurrentLine.split(",")[1]);
                 listTeam.add(new Team(name, ranking));
             }
-
+            game.setListTeam(listTeam);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -163,7 +163,7 @@ public class Menu {
         }
     }
 
-    public static boolean isValidateName(String name) {
+    public boolean isValidateName(String name) {
         //Check length
         if (name.length() < 2 || name.startsWith("-") || name.endsWith("-")) {
             return false;
@@ -180,7 +180,8 @@ public class Menu {
         return true;
     }
 
-    public static void viewTeam(List<Team> listTeam) {
+    public void viewTeam() {
+        List<Team> listTeam = game.getListTeam();
         System.out.println("\n######################################################Team fixture##########################################");
         System.out.format("%-15s%-10s%-10s%-10s%-10s%-10s%-10s%-20s\n", new String[]{"", "Played", "Won", "Lost", "Drawn", "Goals", "Points", "Fair Play Score"});
         for (Team team : listTeam) {
@@ -189,7 +190,8 @@ public class Menu {
         System.out.println("");
     }
 
-    public static void sortTeam(List<Team> listTeam) {
+    public void sortTeam() {
+        List<Team> listTeam = game.getListTeam();
         for (int i = 0; i < listTeam.size(); i++) {
             for (int j = 1; j < listTeam.size(); j++) {
                 if (listTeam.get(j).getPoint() > listTeam.get(j - 1).getPoint()) {
@@ -205,16 +207,33 @@ public class Menu {
                     }
                 }
             }
-
+        }
+        for (int i = 0; i < listTeam.size(); i++) {
+            listTeam.get(i).setRanking(i + 1);
         }
     }
 
-    public static void viewPlayer(List<Team> listTeam) {
+    public void viewPlayer() {
+        List<Team> listTeam = game.getListTeam();
         for (Team team : listTeam) {
             Player player1 = team.getPlayer1();
             Player player2 = team.getPlayer2();
             System.out.println(player1.getName() + " (" + team.getName() + ") - " + player1.getGoals());
             System.out.println(player2.getName() + " (" + team.getName() + ") - " + player2.getGoals());
         }
+    }
+
+    public void viewStatistic() {
+        System.out.println("Football World Cup Winner: " + game.getWinnerTeam());
+//        List<Team> listTeam = game.getListTeam();
+//        String goldernBootWinner = listTeam.get(0).getPlayer1().getName();
+//        int mostGoal = listTeam.get(0).getPlayer1().getGoals();
+//        String goldernBootTeam = listTeam.get(0).getName();
+//
+//        for (Team team : listTeam) {
+//            if () {
+//            
+//            }
+//        }
     }
 }
