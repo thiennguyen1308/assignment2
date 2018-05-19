@@ -1,13 +1,13 @@
 package com.faber;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
+//</editor-fold>
 
 /**
  *
@@ -15,13 +15,19 @@ import java.util.Scanner;
  */
 public class Menu {
 
+    private boolean isPlayedPreliminary = false;
+    private boolean isPlayedFinal = false;
+
     public Menu() {
     }
     public static Game game = new Game();
 
     public void start() {
-        Menu menu = new Menu();
-        menu.readFile();
+        
+        //read input file
+        readFile();
+
+        //<editor-fold defaultstate="collapsed" desc="INPUR PLAYER NAME">
         Scanner sc = new Scanner(System.in);
         List<Team> listTeam = game.getListTeam();
         for (int i = 0; i < listTeam.size(); i++) {
@@ -67,7 +73,8 @@ public class Menu {
             }
             listTeam.get(i).setPlayer2(player2);
         }
-        Boolean isFinishPreliminaryStage = false;
+        //</editor-fold>
+
         menuLoop:
         while (true) {
             System.out.println("################################################### Menu ###########################################################");
@@ -81,40 +88,53 @@ public class Menu {
             String option = sc.nextLine();
             switch (option) {
                 case "A": {
-                    for (int i = 0; i < listTeam.size(); i++) {
-                        Team team1 = listTeam.get(i);
-                        for (int j = 0; j < listTeam.size(); j++) {
-                            if (j == i) {
-                                continue;
+                    if (!isPlayedPreliminary) {
+                        for (int i = 0; i < listTeam.size(); i++) {
+                            for (int j = 0; j < listTeam.size(); j++) {
+                                if (j == i) {
+                                    continue;
+                                }
+                                game.playGame(i, j, false);
                             }
-                            Team team2 = listTeam.get(j);
-                            game.playGame(team1, team2, false);
                         }
+                        game.sortTeam();
+                        game.makeStatistic();
+                        isPlayedPreliminary = true;
+                    } else {
+                        System.out.println("You've already played Preliminary Stage");
                     }
-                    sortTeam();
-                    isFinishPreliminaryStage = true;
                     break;
                 }
                 case "B": {
-                    if (isFinishPreliminaryStage) {
-                        game.playGame(listTeam.get(0), listTeam.get(1), true);
-                        game.viewStatistic();
+                    if (isPlayedFinal) {
+                        System.out.println("You've already played Final Stage");
+                    }
+                    if (isPlayedPreliminary) {
+                        game.playGame(0, 1, true);
+                        isPlayedFinal = true;
+                        game.sortTeam();
+                        game.makeStatistic();
                     } else {
                         System.out.println("Please play Preliminary stage before final");
                         break;
                     }
-                    sortTeam();
+                    break;
                 }
                 case "C":
-                    viewTeam();
+                    game.viewTeam();
                     break;
                 case "D":
-                    viewPlayer();
+                    game.viewPlayer();
                     break;
                 case "E":
-                    viewStatistic();
+                    if (isPlayedFinal) {
+                        game.viewStatistic();
+                    } else {
+                        System.out.println("Please complete final stage before view statistic");
+                    }
                     break;
                 case "X": {
+                    game.writeStatisticFile();
                     break menuLoop;
                 }
                 default: {
@@ -125,6 +145,7 @@ public class Menu {
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="READ FILE">
     private void readFile() {
         BufferedReader br = null;
         FileReader fr = null;
@@ -158,14 +179,14 @@ public class Menu {
                 }
 
             } catch (IOException ex) {
-
                 ex.printStackTrace();
-
             }
 
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="CHECK VALIDATE TEAM">
     public boolean isValidateName(String name) {
         //Check length
         if (name.length() < 2 || name.startsWith("-") || name.endsWith("-")) {
@@ -182,53 +203,6 @@ public class Menu {
 
         return true;
     }
+    //</editor-fold>
 
-    public void viewTeam() {
-        List<Team> listTeam = game.getListTeam();
-        System.out.println("\n######################################################Team fixture##########################################");
-        System.out.format("%-15s%-10s%-10s%-10s%-10s%-10s%-10s%-20s\n", new String[]{"", "Played", "Won", "Lost", "Drawn", "Goals", "Points", "Fair Play Score"});
-        for (Team team : listTeam) {
-            System.out.format("%-18s%-8s%-10s%-10s%-10s%-11s%-15s%-20s\n", new String[]{team.getName(), team.getPlayed() + "", team.getWon() + "", team.getLost() + "", team.getDrawn() + "", team.getGoal() + "", team.getPoint() + "", (team.getYellowCardScore() + 2 * team.getRedCardScore()) + ""});
-        }
-        System.out.println("");
-    }
-
-    public void sortTeam() {
-        List<Team> listTeam = game.getListTeam();
-        for (int i = 0; i < listTeam.size(); i++) {
-            for (int j = 1; j < listTeam.size(); j++) {
-                if (listTeam.get(j).getPoint() > listTeam.get(j - 1).getPoint()) {
-                    Collections.swap(listTeam, j, j - 1);
-                } else if (listTeam.get(j).getPoint() == listTeam.get(j - 1).getPoint()) {
-                    if (listTeam.get(j).getGoal() > listTeam.get(j - 1).getGoal()) {
-                        Collections.swap(listTeam, j, j - 1);
-                    } else if (listTeam.get(j).getGoal() == listTeam.get(j - 1).getGoal()) {
-                        Random rand = new Random();
-                        if (rand.nextBoolean()) {
-                            Collections.swap(listTeam, j, j - 1);
-                        }
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < listTeam.size(); i++) {
-            listTeam.get(i).setRanking(i + 1);
-        }
-    }
-
-    public void viewPlayer() {
-        List<Team> listTeam = game.getListTeam();
-        for (Team team : listTeam) {
-            Player player1 = team.getPlayer1();
-            Player player2 = team.getPlayer2();
-            System.out.println(player1.getName() + " (" + team.getName() + ") - " + player1.getGoals());
-            System.out.println(player2.getName() + " (" + team.getName() + ") - " + player2.getGoals());
-        }
-    }
-
-    public void viewStatistic() {
-        System.out.println("Football World Cup Winner: " + game.getChampionTeam());
-        System.out.println("golden boot award: " + game.getGoldenBootAward());
-        System.out.println("fair team: " + game.getFairTeam());
-    }
 }

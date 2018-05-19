@@ -1,7 +1,15 @@
 package com.faber;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
+import static com.faber.Menu.game;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
+//</editor-fold>
 /**
  *
  * @author THIEN
@@ -17,7 +25,7 @@ public class Game {
 
     }
 
-    public Game(List<Team> listTeamÏ) {
+    public Game(List<Team> listTeam) {
         this.listTeam = listTeam;
     }
 
@@ -53,7 +61,9 @@ public class Game {
         this.fairTeam = fairTeam;
     }
 
-    public void playGame(Team team1, Team team2, Boolean isFinal) {
+    public void playGame(int team1Index, int team2Index, Boolean isFinal) {
+        Team team1 = listTeam.get(team1Index);
+        Team team2 = listTeam.get(team2Index);
         RandomGoalsGenerator randomGoalsGenerator = new RandomGoalsGenerator();
 
         int team1Goal;
@@ -162,7 +172,51 @@ public class Game {
         }
     }
 
-    public void viewStatistic() {
+    public void viewTeam() {
+        System.out.println("\n######################################################Team fixture##########################################");
+        System.out.format("%-15s%-10s%-10s%-10s%-10s%-10s%-10s%-20s\n", new String[]{"", "Played", "Won", "Lost", "Drawn", "Goals", "Points", "Fair Play Score"});
+        for (Team team : listTeam) {
+            System.out.format("%-18s%-8s%-10s%-10s%-10s%-11s%-15s%-20s\n", new String[]{team.getName(), team.getPlayed() + "", team.getWon() + "", team.getLost() + "", team.getDrawn() + "", team.getGoal() + "", team.getPoint() + "", (team.getYellowCardScore() + 2 * team.getRedCardScore()) + ""});
+        }
+        System.out.println("");
+    }
+
+    public void viewPlayer() {
+        for (Team team : listTeam) {
+            Player player1 = team.getPlayer1();
+            Player player2 = team.getPlayer2();
+            System.out.println(player1.getName() + " (" + team.getName() + ") - " + player1.getGoals());
+            System.out.println(player2.getName() + " (" + team.getName() + ") - " + player2.getGoals());
+        }
+    }
+
+    public void sortTeam() {
+        for (int i = 0; i < listTeam.size(); i++) {
+            for (int j = 1; j < listTeam.size(); j++) {
+                if (listTeam.get(j).getPoint() > listTeam.get(j - 1).getPoint()) {
+                    Collections.swap(listTeam, j, j - 1);
+                    continue;
+                }
+                if (listTeam.get(j).getPoint() == listTeam.get(j - 1).getPoint()) {
+                    if (listTeam.get(j).getGoal() > listTeam.get(j - 1).getGoal()) {
+                        Collections.swap(listTeam, j, j - 1);
+                        continue;
+                    }
+                    if (listTeam.get(j).getGoal() == listTeam.get(j - 1).getGoal()) {
+                        Random rand = new Random();
+                        if (rand.nextBoolean()) {
+                            Collections.swap(listTeam, j, j - 1);
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < listTeam.size(); i++) {
+            listTeam.get(i).setRanking(i + 1);
+        }
+    }
+
+    public void makeStatistic() {
         int mostGoal = 0;
         int mostCardScore = 100;
         for (int i = 0; i < listTeam.size(); i++) {
@@ -190,4 +244,24 @@ public class Game {
         }
 
     }
+
+    public void viewStatistic() {
+        System.out.println("Football World Cup Winner: " + game.getChampionTeam());
+        System.out.println("golden boot award: " + game.getGoldenBootAward());
+        System.out.println("fair team: " + game.getFairTeam());
+    }
+
+    public void writeStatisticFile() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter("/Users/nguyenthong/Downloads/statistic.txt", "UTF-8");
+            writer.println("Football World Cup Winner: " + championTeam);
+            writer.println("golden boot award: " + goldenBootAward);
+            writer.println("fair team: " + fairTeam);
+        } catch (FileNotFoundException | UnsupportedEncodingException ex) {
+        } finally {
+            writer.close();
+        }
+    }
+
 }
