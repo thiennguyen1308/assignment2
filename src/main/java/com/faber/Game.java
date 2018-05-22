@@ -64,6 +64,7 @@ public class Game {
     
     //<editor-fold defaultstate="collapsed" desc="INPUR PLAYER NAME">
     public void inputPlayerName() {
+        Player player = new Player();
         Scanner sc = new Scanner(System.in);
         for (int i = 0; i < listTeam.size(); i++) {
             Boolean player1SecondTry = false;
@@ -73,7 +74,7 @@ public class Game {
                 System.out.println("Please enter name for " + listTeam.get(i).getName() + " player 1");
                 player1Name = sc.nextLine();
 
-                if (!game.isValidateName(player1Name)) {
+                if (!player.isValidateName(player1Name)) {
                     if (player1SecondTry) {
                         player1Name = "player-1-" + listTeam.get(i).getName();
                     } else {
@@ -94,7 +95,7 @@ public class Game {
                 System.out.println("Please enter name for " + listTeam.get(i).getName() + " player 2");
                 player2Name = sc.nextLine();
 
-                if (!game.isValidateName(player2Name) || player2Name.equals(player1Name)) {
+                if (!player.isValidateName(player2Name) || player2Name.equals(player1Name)) {
                     if (player2SecondTry) {
                         player2Name = "player-2-" + listTeam.get(i).getName();
                     } else {
@@ -314,22 +315,4 @@ public class Game {
         }
     }
 
-    //<editor-fold defaultstate="collapsed" desc="CHECK VALIDATE NAME">
-    public boolean isValidateName(String name) {
-        //Check length
-        if (name.length() < 2 || name.startsWith("-") || name.endsWith("-")) {
-            return false;
-        }
-
-        //Check contain non alphabet
-        for (int i = 0; i < name.length(); i++) {
-            char charAt2 = name.charAt(i);
-            if (!Character.isLetter(charAt2) && !Character.toString(charAt2).equals("-")) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    //</editor-fold>
 }
