@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 //</editor-fold>
 /**
@@ -60,6 +61,55 @@ public class Game {
     public void setFairTeam(String fairTeam) {
         this.fairTeam = fairTeam;
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="INPUR PLAYER NAME">
+    public void inputPlayerName() {
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i < listTeam.size(); i++) {
+            Boolean player1SecondTry = false;
+            Player player1 = new Player();
+            String player1Name;
+            while (true) {
+                System.out.println("Please enter name for " + listTeam.get(i).getName() + " player 1");
+                player1Name = sc.nextLine();
+
+                if (!game.isValidateName(player1Name)) {
+                    if (player1SecondTry) {
+                        player1Name = "player-1-" + listTeam.get(i).getName();
+                    } else {
+                        player1SecondTry = true;
+                        continue;
+                    }
+                }
+                System.out.println("1st player in " + listTeam.get(i).getName() + " team is " + player1Name);
+                player1.setName(player1Name);
+                break;
+            }
+            listTeam.get(i).setPlayer1(player1);
+
+            Boolean player2SecondTry = false;
+            Player player2 = new Player();
+            String player2Name;
+            while (true) {
+                System.out.println("Please enter name for " + listTeam.get(i).getName() + " player 2");
+                player2Name = sc.nextLine();
+
+                if (!game.isValidateName(player2Name) || player2Name.equals(player1Name)) {
+                    if (player2SecondTry) {
+                        player2Name = "player-2-" + listTeam.get(i).getName();
+                    } else {
+                        player2SecondTry = true;
+                        continue;
+                    }
+                }
+                System.out.println("2nd player in " + listTeam.get(i).getName() + " team is " + player2Name);
+                player2.setName(player2Name);
+                break;
+            }
+            listTeam.get(i).setPlayer2(player2);
+        }
+    }
+    //</editor-fold>
 
     public void playGame(int team1Index, int team2Index, Boolean isFinal) {
         Team team1 = listTeam.get(team1Index);
@@ -264,4 +314,22 @@ public class Game {
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="CHECK VALIDATE NAME">
+    public boolean isValidateName(String name) {
+        //Check length
+        if (name.length() < 2 || name.startsWith("-") || name.endsWith("-")) {
+            return false;
+        }
+
+        //Check contain non alphabet
+        for (int i = 0; i < name.length(); i++) {
+            char charAt2 = name.charAt(i);
+            if (!Character.isLetter(charAt2) && !Character.toString(charAt2).equals("-")) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    //</editor-fold>
 }

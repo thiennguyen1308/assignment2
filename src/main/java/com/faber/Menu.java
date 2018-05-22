@@ -23,58 +23,11 @@ public class Menu {
     public static Game game = new Game();
 
     public void start() {
-        
+
         //read input file
         readFile();
-
-        //<editor-fold defaultstate="collapsed" desc="INPUR PLAYER NAME">
+        game.inputPlayerName();
         Scanner sc = new Scanner(System.in);
-        List<Team> listTeam = game.getListTeam();
-        for (int i = 0; i < listTeam.size(); i++) {
-            Boolean player1SecondTry = false;
-            Player player1 = new Player();
-            String player1Name;
-            while (true) {
-                System.out.println("Please enter name for " + listTeam.get(i).getName() + " player 1");
-                player1Name = sc.nextLine();
-
-                if (!isValidateName(player1Name)) {
-                    if (player1SecondTry) {
-                        player1Name = "player-1-" + listTeam.get(i).getName();
-                    } else {
-                        player1SecondTry = true;
-                        continue;
-                    }
-                }
-                System.out.println("1st player in " + listTeam.get(i).getName() + " team is " + player1Name);
-                player1.setName(player1Name);
-                break;
-            }
-            listTeam.get(i).setPlayer1(player1);
-
-            Boolean player2SecondTry = false;
-            Player player2 = new Player();
-            String player2Name;
-            while (true) {
-                System.out.println("Please enter name for " + listTeam.get(i).getName() + " player 2");
-                player2Name = sc.nextLine();
-
-                if (!isValidateName(player2Name) || player2Name.equals(player1Name)) {
-                    if (player2SecondTry) {
-                        player2Name = "player-2-" + listTeam.get(i).getName();
-                    } else {
-                        player2SecondTry = true;
-                        continue;
-                    }
-                }
-                System.out.println("2nd player in " + listTeam.get(i).getName() + " team is " + player2Name);
-                player2.setName(player2Name);
-                break;
-            }
-            listTeam.get(i).setPlayer2(player2);
-        }
-        //</editor-fold>
-
         menuLoop:
         while (true) {
             System.out.println("################################################### Menu ###########################################################");
@@ -89,8 +42,8 @@ public class Menu {
             switch (option) {
                 case "A": {
                     if (!isPlayedPreliminary) {
-                        for (int i = 0; i < listTeam.size(); i++) {
-                            for (int j = 0; j < listTeam.size(); j++) {
+                        for (int i = 0; i < game.getListTeam().size(); i++) {
+                            for (int j = 0; j < game.getListTeam().size(); j++) {
                                 if (j == i) {
                                     continue;
                                 }
@@ -152,7 +105,7 @@ public class Menu {
 
         try {
             //br = new BufferedReader(new FileReader(FILENAME));
-            fr = new FileReader("/Users/nguyenthong/Downloads/teams.txt");
+            fr = new FileReader("C:\\Users\\PC\\Downloads\\teams.txt");
             br = new BufferedReader(fr);
 
             String sCurrentLine;
@@ -185,24 +138,4 @@ public class Menu {
         }
     }
     //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="CHECK VALIDATE TEAM">
-    public boolean isValidateName(String name) {
-        //Check length
-        if (name.length() < 2 || name.startsWith("-") || name.endsWith("-")) {
-            return false;
-        }
-
-        //Check contain non alphabet
-        for (int i = 0; i < name.length(); i++) {
-            char charAt2 = name.charAt(i);
-            if (!Character.isLetter(charAt2) && !Character.toString(charAt2).equals("-")) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    //</editor-fold>
-
 }
