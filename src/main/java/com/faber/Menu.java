@@ -15,18 +15,20 @@ import java.util.Scanner;
  */
 public class Menu {
 
-    private boolean isPlayedPreliminary = false;
-    private boolean isPlayedFinal = false;
-
     public Menu() {
     }
-    public static Game game = new Game();
+    private static Game game;
 
     public void start() {
-
+        //init variable
+        game = new Game();//init Game class
+        boolean isPlayedPreliminary = false;//set user played prelimary to false
+        boolean isPlayedFinal = false;//set user played final to false
+        
+        
         //read input file
-        readFile();
-        game.inputPlayerName();
+        readFile();//read txt file
+        game.inputPlayerName();//run input playername process
         Scanner sc = new Scanner(System.in);
         menuLoop:
         while (true) {
@@ -41,7 +43,7 @@ public class Menu {
             String option = sc.nextLine();
             switch (option) {
                 case "A": {
-                    if (!isPlayedPreliminary) {
+                    if (!isPlayedPreliminary) {//if user never play prelimary stage
                         for (int i = 0; i < game.getListTeam().size(); i++) {
                             for (int j = 0; j < game.getListTeam().size(); j++) {
                                 if (j == i) {
@@ -50,8 +52,8 @@ public class Menu {
                                 game.playGame(i, j, false);
                             }
                         }
-                        game.sortTeam();
-                        game.makeStatistic();
+                        game.sortTeam();//sort team by order after finish all row
+                        game.makeStatistic();// make statistic to print in option C
                         isPlayedPreliminary = true;
                     } else {
                         System.out.println("You've already played Preliminary Stage");
@@ -63,10 +65,10 @@ public class Menu {
                         System.out.println("You've already played Final Stage");
                     }
                     if (isPlayedPreliminary) {
-                        game.playGame(0, 1, true);
+                        game.playGame(0, 1, true);// play game between 2 top ranking team
                         isPlayedFinal = true;
-                        game.sortTeam();
-                        game.makeStatistic();
+                        game.sortTeam();//sort team by order after finish all row
+                        game.makeStatistic();// make statistic to print in option C
                     } else {
                         System.out.println("Please play Preliminary stage before final");
                         break;
@@ -87,8 +89,8 @@ public class Menu {
                     }
                     break;
                 case "X": {
-                    game.writeStatisticFile();
-                    break menuLoop;
+                    game.writeStatisticFile();//write statistic file and exit
+                    System.exit(-1);
                 }
                 default: {
                     System.out.println("Please enter valid option below");

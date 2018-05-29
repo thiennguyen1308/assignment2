@@ -1,7 +1,6 @@
 package com.faber;
 
 //<editor-fold defaultstate="collapsed" desc="IMPORT">
-import static com.faber.Menu.game;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -141,7 +140,8 @@ public class Game {
         if (isFinal && (team1Goal == team2Goal)) {
             isTeam1Win = playPenaltyShootOut(team1, team2);
         }
-        displayGameResult(team1, team2, team1Goal, team2Goal, team1YellowCard, team2YellowCard, team1RedCard, team2RedCard);
+        displayGameResult(team1, team2, team1Goal, team2Goal, team1YellowCard, team2YellowCard, team1RedCard, team2RedCard);//view game result after finish rand goal and score.
+        
         team1.setPlayed(team1.getPlayed() + 1);
         team2.setPlayed(team2.getPlayed() + 1);
         team1.setGoal(team1.getGoal() + team1Goal);
@@ -271,6 +271,7 @@ public class Game {
         int mostGoal = 0;
         int mostCardScore = 100;
         for (int i = 0; i < listTeam.size(); i++) {
+            // get player1 most scored
             if (listTeam.get(i).getPlayer1().getGoals() > mostGoal) {
                 mostGoal = listTeam.get(i).getPlayer1().getGoals();
                 goldenBootAward = listTeam.get(i).getPlayer1().getName() + " from " + listTeam.get(i).getName();
@@ -278,6 +279,7 @@ public class Game {
                 mostGoal = listTeam.get(i).getPlayer1().getGoals();
                 goldenBootAward = ", " + listTeam.get(i).getPlayer1().getName() + " from " + listTeam.get(i).getName();
             }
+            // get player2 most scored and compare with player1
             if (listTeam.get(i).getPlayer2().getGoals() > mostGoal) {
                 mostGoal = listTeam.get(i).getPlayer2().getGoals();
                 goldenBootAward = listTeam.get(i).getPlayer2().getName() + " from " + listTeam.get(i).getName();
@@ -285,8 +287,8 @@ public class Game {
                 mostGoal = listTeam.get(i).getPlayer2().getGoals();
                 goldenBootAward = ", " + listTeam.get(i).getPlayer2().getName() + " from " + listTeam.get(i).getName();
             }
-            int cardScore = listTeam.get(i).getYellowCardScore() + (2 * listTeam.get(i).getRedCardScore());
-            if (cardScore < mostCardScore) {
+            int cardScore = listTeam.get(i).getYellowCardScore() + (2 * listTeam.get(i).getRedCardScore());// get card score current team
+            if (cardScore < mostCardScore) {//return team has the least card score
                 mostCardScore = cardScore;
                 fairTeam = listTeam.get(i).getName();
             } else if (cardScore == mostCardScore) {
@@ -297,18 +299,18 @@ public class Game {
     }
 
     public void viewStatistic() {
-        System.out.println("Football World Cup Winner: " + game.getChampionTeam());
-        System.out.println("golden boot award: " + game.getGoldenBootAward());
-        System.out.println("fair team: " + game.getFairTeam());
+        System.out.println("Football World Cup Winner: " + championTeam);
+        System.out.println("golden boot award: " + goldenBootAward);
+        System.out.println("fair team: " + fairTeam);
     }
 
     public void writeStatisticFile() {
-        PrintWriter writer = null;
+        PrintWriter writer = null;// init write file
         try {
-            writer = new PrintWriter("/Users/nguyenthong/Downloads/statistic.txt", "UTF-8");
-            writer.println("Football World Cup Winner: " + championTeam);
-            writer.println("golden boot award: " + goldenBootAward);
-            writer.println("fair team: " + fairTeam);
+            writer = new PrintWriter("/Users/nguyenthong/Downloads/statistic.txt", "UTF-8"); //open file with utf-8 format
+            writer.println("Football World Cup Winner: " + championTeam);//write file
+            writer.println("golden boot award: " + goldenBootAward);//write file
+            writer.println("fair team: " + fairTeam);//write file
         } catch (FileNotFoundException | UnsupportedEncodingException ex) {
         } finally {
             writer.close();
