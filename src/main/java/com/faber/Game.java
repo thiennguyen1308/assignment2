@@ -112,22 +112,22 @@ public class Game {
     //</editor-fold>
 
     public void playGame(int team1Index, int team2Index, Boolean isFinal) {
-        Team team1 = listTeam.get(team1Index);
-        Team team2 = listTeam.get(team2Index);
-        RandomGoalsGenerator randomGoalsGenerator = new RandomGoalsGenerator();
+        Team team1 = listTeam.get(team1Index);//get team 1
+        Team team2 = listTeam.get(team2Index);//get team 2
+        RandomGoalsGenerator randomGoalsGenerator = new RandomGoalsGenerator();// init random goal class
 
         int team1Goal;
         int team2Goal;
         boolean isTeam1Win = false;
         if (team1.getRanking() > team2.getRanking()) {
-            team1Goal = randomGoalsGenerator.randomGoalInRange(0, 7);
-            team2Goal = randomGoalsGenerator.randomGoalInRange(0, 7 - (team1.getRanking() - team2.getRanking()));
+            team1Goal = randomGoalsGenerator.randomGoalInRange(0, 7);// random a goal from 0-5 +(0-2) = 0-7
+            team2Goal = randomGoalsGenerator.randomGoalInRange(0, 7 - Math.abs(team1.getRanking() - team2.getRanking()));// random a goal from 0-5 +(0-2) = 0-7 - diff in rank
         } else {
-            team1Goal = randomGoalsGenerator.randomGoalInRange(0, 7 - (team1.getRanking() - team2.getRanking()));
+            team1Goal = randomGoalsGenerator.randomGoalInRange(0, 7 - Math.abs(team2.getRanking() - team1.getRanking()));
             team2Goal = randomGoalsGenerator.randomGoalInRange(0, 7);
         }
-        int team1YellowCard = randomGoalsGenerator.randomYellowCard();
-        int team1RedCard = randomGoalsGenerator.randomRedCard();
+        int team1YellowCard = randomGoalsGenerator.randomYellowCard();//random yellow card
+        int team1RedCard = randomGoalsGenerator.randomRedCard();//random red card
         team1.setYellowCardScore(team1.getYellowCardScore() + team1YellowCard);
         team1.setRedCardScore(team1.getRedCardScore() + team1RedCard);
 
@@ -137,14 +137,15 @@ public class Game {
         team2.setYellowCardScore(team2.getYellowCardScore() + team2YellowCard);
         team2.setRedCardScore(team2.getRedCardScore() + team2RedCard);
 
-        if (isFinal && (team1Goal == team2Goal)) {
+        if (isFinal && (team1Goal == team2Goal)) {// if this game is final, and 2 team is draw, play penalty
             isTeam1Win = playPenaltyShootOut(team1, team2);
         }
+        //display game result
         displayGameResult(team1, team2, team1Goal, team2Goal, team1YellowCard, team2YellowCard, team1RedCard, team2RedCard);//view game result after finish rand goal and score.
         
-        team1.setPlayed(team1.getPlayed() + 1);
+        team1.setPlayed(team1.getPlayed() + 1);//make total game played of team
         team2.setPlayed(team2.getPlayed() + 1);
-        team1.setGoal(team1.getGoal() + team1Goal);
+        team1.setGoal(team1.getGoal() + team1Goal);// make total goal of team
         team2.setGoal(team2.getGoal() + team2Goal);
 
         Player player1Team1 = team1.getPlayer1();
@@ -198,10 +199,10 @@ public class Game {
         int shots = 0;
         int team1Goal = 0;
         int team2Goal = 0;
-        while (shots < 6) {
+        while (shots < 6) {// total 6 shots
             team1Goal += randomGoalsGenerator.randomGoal();
             team2Goal += randomGoalsGenerator.randomGoal();
-            if (shots == 5 && (team1Goal == team2Goal)) {
+            if (shots == 5 && (team1Goal == team2Goal)) {// if last shot but team1 and team2 equal, we continue next 6 shots
                 shots = 0;
                 team1Goal = 0;
                 team2Goal = 0;
@@ -242,13 +243,14 @@ public class Game {
     }
 
     public void sortTeam() {
+        //sort team, team has most point and most goal go up, rule at beginning of page 2
         for (int i = 0; i < listTeam.size(); i++) {
             for (int j = 1; j < listTeam.size(); j++) {
-                if (listTeam.get(j).getPoint() > listTeam.get(j - 1).getPoint()) {
+                if (listTeam.get(j).getPoint() > listTeam.get(j - 1).getPoint()) {//if team at j has more point than team at j-1, swap j and j-1
                     Collections.swap(listTeam, j, j - 1);
                     continue;
                 }
-                if (listTeam.get(j).getPoint() == listTeam.get(j - 1).getPoint()) {
+                if (listTeam.get(j).getPoint() == listTeam.get(j - 1).getPoint()) {//if 2 team has same point
                     if (listTeam.get(j).getGoal() > listTeam.get(j - 1).getGoal()) {
                         Collections.swap(listTeam, j, j - 1);
                         continue;
